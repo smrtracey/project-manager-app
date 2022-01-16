@@ -26,16 +26,17 @@ const TasksView = ({projects,updateProjects}) => {
                 setActiveTasks(projects[index].tasks)
             }
         }
-    })
+    },[projects])
 
     // add new task and then update Projects list.
     const addTask =(name, desc)=>{
         const tempProject = activeProject;
-        //adds an object
+        //adds an object with default status of 'todo'
         tempProject.tasks.push(
             {
                 name: {name},
-                desc: {desc}
+                desc: {desc},
+                status: 'todo'
             }
         );
 
@@ -43,6 +44,26 @@ const TasksView = ({projects,updateProjects}) => {
         updateProjects(activeProject);
         toggleModal();  
     }
+
+    // Delete a task and update Projects list.
+    const deleteTask =(target)=>{
+        const tempProject = activeProject;
+        const tempTasks = tempProject.tasks;
+        const filtered = tempTasks.filter(task =>
+            task.name.name !== target
+        );
+        // update the activeTasks state and the project object.
+        tempProject.tasks = filtered;
+        setActiveTasks(filtered);
+        updateProjects(tempProject); 
+        
+        
+    }
+
+    
+    // Change a tasks status
+
+    //  Edit a task.
 
     return (
        <div className='tasks'>
@@ -74,7 +95,7 @@ const TasksView = ({projects,updateProjects}) => {
                     activeTasks.map((task)=>{
                         const {name, desc} = task
                         return(
-                            <TaskListItem key = {name} name ={name.name} desc = {desc.desc}/>
+                            <TaskListItem key = {name.name} name ={name.name} desc = {desc.desc} deleteTask={deleteTask}/>
                         )
                     })
                 }

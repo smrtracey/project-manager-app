@@ -4,11 +4,11 @@ import TasksView from './TasksView'
 
 const Main = () => {
 
-    // Stores the projects objects -[{name: String, tasks: [{name: String, desc: String}], active: boolean}]
+    // Stores the projects objects -[{name: String, tasks: [{name: String, desc: String, status: String}], active: boolean}]
     const [projects, setProjects] = useState([])
 
     const addProject =(projectName) =>{
-        
+        // when first created, a project has no tasks.
         const tempProjects = [...projects];
         tempProjects.push({
             name: projectName,
@@ -17,9 +17,10 @@ const Main = () => {
         setProjects(tempProjects);
     }
 
+    // set all projects to false except target project.
     const makeActive = (projectName) =>{
         const tempProjects = [...projects]
-        // set all projects to false except target project.
+        
        tempProjects.map((project)=>{
            const {name, active} = project;
            if(name === projectName){
@@ -45,6 +46,19 @@ const Main = () => {
         setProjects(tempProjects);
     }
 
+    //If theres any projects saved to local Storage, set them as the projects. 
+    useEffect(()=>{
+        const fromStorage = localStorage.getItem('PMAprojects');
+        if(fromStorage){
+            setProjects(JSON.parse(fromStorage));
+        }
+        
+    },[])
+
+    // Any time the projects state is changed, save the projects to localStorage
+    useEffect(()=>{
+        localStorage.setItem('PMAprojects', JSON.stringify(projects));
+    },[projects])
  
     return (
         <main className='main'>
@@ -54,7 +68,10 @@ const Main = () => {
                 makeActive={makeActive}
             />
 
-            <TasksView projects ={projects} updateProjects={updateProjects}/>
+            <TasksView 
+                projects ={projects} 
+                updateProjects={updateProjects}
+            />
         </main>
     )
 }

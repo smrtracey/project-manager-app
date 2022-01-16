@@ -1,5 +1,4 @@
 import {useState} from 'react'
-import Project from './Project'
 
 import CreateForm from './CreateForm'
 
@@ -14,7 +13,6 @@ const ProjectsView = ({projects,addProject,makeActive}) => {
     }
 
     const createNewProject =(projectName) =>{
-        
         addProject(projectName);
         setIsCreating(false);
     }
