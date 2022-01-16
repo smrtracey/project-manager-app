@@ -48,6 +48,7 @@ const TasksView = ({projects,updateProjects}) => {
     // Delete a task and update Projects list.
     const deleteTask =(target)=>{
         const tempProject = activeProject;
+
         const tempTasks = tempProject.tasks;
         const filtered = tempTasks.filter(task =>
             task.name.name !== target
@@ -55,14 +56,34 @@ const TasksView = ({projects,updateProjects}) => {
         // update the activeTasks state and the project object.
         tempProject.tasks = filtered;
         setActiveTasks(filtered);
-        updateProjects(tempProject); 
-        
-        
+        updateProjects(tempProject);   
     }
 
-    
     // Change a tasks status
+    const changeStatus = (targetName, newStatus)=>{
+       
+        const tempProject = activeProject;
+       
+        const tempTasks = tempProject.tasks;
+        
 
+
+        for(let i in tempTasks){
+           
+            
+            if(tempTasks[i].name.name === targetName){
+               
+                tempTasks[i].status = newStatus;
+            }
+            
+        }
+        // update the activeTasks state and the project object.
+        tempProject.tasks = tempTasks;
+        setActiveTasks(tempTasks);
+        updateProjects(tempProject); 
+
+       
+    }
     //  Edit a task.
 
     return (
@@ -94,9 +115,17 @@ const TasksView = ({projects,updateProjects}) => {
                     // Change this to render only the TaskListItems where the status = 'todo'
                     activeTasks.map((task)=>{
                         const {name, desc} = task
-                        return(
-                            <TaskListItem key = {name.name} name ={name.name} desc = {desc.desc} deleteTask={deleteTask}/>
-                        )
+                        if(task.status === 'todo'){
+                            return(
+                                <TaskListItem 
+                                key = {name.name} 
+                                name ={name.name} 
+                                desc = {desc.desc} 
+                                deleteTask={deleteTask} 
+                                changeStatus={changeStatus}/>
+                            )
+                        }
+                        
                     })
                 }
                 </ul>
@@ -104,10 +133,46 @@ const TasksView = ({projects,updateProjects}) => {
 
             <div className='panel in-progress-panel'>
                 <h3>In Progress</h3>
+                <ul className='tasks-list'>
+                {
+                    // Change this to render only the TaskListItems where the status = 'todo'
+                    activeTasks.map((task)=>{
+                        const {name, desc} = task
+                        if(task.status === 'doing'){
+                            return(
+                                <TaskListItem 
+                                key = {name.name} 
+                                name ={name.name} 
+                                desc = {desc.desc} 
+                                deleteTask={deleteTask} 
+                                changeStatus={changeStatus}/>
+                            )
+                        }
+                        
+                    })
+                }
+                </ul>
             </div>
 
             <div className='panel done-panel'>
                 <h3>Done</h3>
+                {
+                    // Change this to render only the TaskListItems where the status = 'todo'
+                    activeTasks.map((task)=>{
+                        const {name, desc} = task
+                        if(task.status === 'done'){
+                            return(
+                                <TaskListItem 
+                                key = {name.name} 
+                                name ={name.name} 
+                                desc = {desc.desc} 
+                                deleteTask={deleteTask} 
+                                changeStatus={changeStatus}/>
+                            )
+                        }
+                        
+                    })
+                }
             </div>
 
 

@@ -2,7 +2,7 @@ import React from 'react'
 
 
 import '../styles/tasks.css'
-const TaskListItem = ({name, desc,deleteTask}) => {
+const TaskListItem = ({name, desc,deleteTask, changeStatus}) => {
     // the list item should show only the name
     // and a button to expand for the full description
     return (
@@ -23,9 +23,9 @@ const TaskListItem = ({name, desc,deleteTask}) => {
                 </p>
 
                 <div className='status-toggles-wrapper'>
-                <div className='status-toggle toggle-todo'></div>
-                <div className='status-toggle toggle-doing'></div>
-                <div className='status-toggle toggle-done'></div>
+                <div className='status-toggle toggle-todo' onClick = {()=>changeStatus( name, 'todo')}></div>
+                <div className='status-toggle toggle-doing' onClick = {()=>changeStatus( name, 'doing')}></div>
+                <div className='status-toggle toggle-done' onClick = {()=>changeStatus( name, 'done')}></div>
                 </div>
             </div>
             
