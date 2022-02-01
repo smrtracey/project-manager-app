@@ -4,7 +4,23 @@ import TasksView from './TasksView'
 
 const Main = () => {
 
-    // Stores the projects objects -[{name: String, tasks: [{name: String, desc: String, stage: String}], active: boolean}]
+    // Stores the projects objects. Every object is structured like so-
+    // [
+    // {
+    // name: String,
+    // tasks: [
+    //     {
+    //      index: int,
+    //      name: String, 
+    //      as: String,
+    //      want: String,
+    //      so: String,
+    //      est: int,
+    //      imp: int
+    //     }
+    // ], 
+    // active: boolean}
+    // ]
     const [projects, setProjects] = useState([])
 
     // Function to add a new Project to the projects array.

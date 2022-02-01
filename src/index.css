@@ -3,7 +3,7 @@
   --clr-body-bg: hsla( 205 3% 57%);
   --clr-card-bg: hsl(58 100% 90%);
   --clr-todo: hsl(354 69% 50%);
-  --clr-doing:hsl(196 50% 53%);
+  --clr-tasks-bg:hsl(196 50% 53%);
   --clr-done:hsl(145 71% 47%);
 
   --clr-dark-text: hsl(180 7% 16%);
@@ -26,6 +26,7 @@
 
 .main{
   display: flex;
-  background: var(--clr-body-bg);
+  justify-content: flex-start;
+  background: var(--clr-tasks-bg);
 }
 

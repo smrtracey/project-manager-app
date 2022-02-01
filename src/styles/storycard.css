@@ -1,0 +1,14 @@
+.task-card{
+    width: 100%;
+    height: auto;
+    margin: 5px auto;
+    background: var(--clr-card-bg);
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.task-card-topper{
+    display: flex;
+    justify-content: space-between;
+}

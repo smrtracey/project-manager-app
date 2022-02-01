@@ -1,5 +1,5 @@
 import {useState,useEffect} from 'react'
-import TaskListItem from './TaskListItem'
+import Storycard from './Storycard'
 import '../styles/tasks.css'
 import NewTaskModal from './NewTaskModal'
 
@@ -19,14 +19,11 @@ const TasksView = ({projects, updateProject, isViewOpen}) => {
     }
     
     // Add a new task to the active tasks list
-    const addTask = (nameInput, descInput)=>{
-        
+    const addTask = (state)=>{
          const tempTasks = [...activeTasks];
-         tempTasks.push({
-             name: nameInput,
-             desc: descInput,
-             stage: 'todo'
-         })
+         tempTasks.push(
+            state
+         )
 
          setActiveTasks(tempTasks);
          toggleModal();
@@ -34,18 +31,13 @@ const TasksView = ({projects, updateProject, isViewOpen}) => {
     }
 
     const deleteTask = (target)=>{
-
+        console.log('In delete')
         const tempTasks = [...activeTasks];
 
         const filtered = tempTasks.filter(task =>
             task.name !==target
         );
         setActiveTasks(filtered);
-    }
-
-
-    const changeStage = ()=>{
-
     }
 
     // set the active project
@@ -82,10 +74,58 @@ const TasksView = ({projects, updateProject, isViewOpen}) => {
             </div>
 
             <div className='tasks-view'>
+                <section className='column backlog-col'>
+                    <h2>Backlog</h2>
+                    {
+                        activeTasks.map((task)=>{
+                            const {index, name, as, want, so, est,imp} = task
+                            return(
+                                <Storycard
+                                key = {index}
+                                index = {index}
+                                name = {name}
+                                as = {as}
+                                want = {want}
+                                so = {so}
+                                est = {est}
+                                imp = {imp}
+                                deleteTask = {deleteTask}/>
+                            )
+                        })
+                    }
+                </section>
 
+                <section className='column analysis-col'>
+                    <h2>In Analysis</h2>                    
+                </section>
 
-                {/* In each column, filter through the projects and render the list items with the correct status */}
-            <div className='panel todo-panel'>
+                <section className='column dev-col'>
+                    <h2>In Development</h2>                    
+                </section>
+
+                <section className='column qa-col'>
+                    <h2>In QA</h2>
+                </section>
+
+                <section className='column sign-off-col'>
+                    <h2>Ready to Sign Off</h2>
+                </section>
+
+                <section className='column done-col'>
+                    <h2>Done</h2>
+                </section>
+            </div>
+        </div>    
+       
+       
+    )
+}
+
+export default TasksView
+
+{/* 
+   
+   <div className='panel todo-panel'>
                 <h3>To Do</h3>
                 <ul className='tasks-list'>
                 {
@@ -159,11 +199,5 @@ const TasksView = ({projects, updateProject, isViewOpen}) => {
             </div>
 
 
-        </div>
-       </div>
-       
-       
-    )
-}
-
-export default TasksView
+        </div> */}
+     
