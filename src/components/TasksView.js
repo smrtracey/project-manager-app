@@ -1,12 +1,14 @@
 import {useState,useEffect} from 'react'
 import TaskListItem from './TaskListItem'
-
 import '../styles/tasks.css'
 import NewTaskModal from './NewTaskModal'
 
-const TasksView = ({projects,updateProjects}) => {
-
+const TasksView = ({projects, updateProject, isViewOpen}) => {
+    
+    // The currently selected project
     const [activeProject, setActiveProject] = useState({});
+
+    // The tasks associated with that project.
     const [activeTasks, setActiveTasks] = useState([]);
 
     // state for task creation modal
@@ -15,12 +17,42 @@ const TasksView = ({projects,updateProjects}) => {
     const toggleModal = ()=>{
         setIsModalShowing(!isModalShowing);
     }
+    
+    // Add a new task to the active tasks list
+    const addTask = (nameInput, descInput)=>{
+        
+         const tempTasks = [...activeTasks];
+         tempTasks.push({
+             name: nameInput,
+             desc: descInput,
+             stage: 'todo'
+         })
+
+         setActiveTasks(tempTasks);
+         toggleModal();
+
+    }
+
+    const deleteTask = (target)=>{
+
+        const tempTasks = [...activeTasks];
+
+        const filtered = tempTasks.filter(task =>
+            task.name !==target
+        );
+        setActiveTasks(filtered);
+    }
+
+
+    const changeStage = ()=>{
+
+    }
 
     // set the active project
     // and the active tasks
     useEffect(()=>{
         for(let index in projects){
-            if(projects[index].active == true)
+            if(projects[index].active === true)
             {
                 setActiveProject(projects[index]);
                 setActiveTasks(projects[index].tasks)
@@ -28,66 +60,14 @@ const TasksView = ({projects,updateProjects}) => {
         }
     },[projects])
 
-    // add new task and then update Projects list.
-    const addTask =(name, desc)=>{
-        const tempProject = activeProject;
-        //adds an object with default status of 'todo'
-        tempProject.tasks.push(
-            {
-                name: {name},
-                desc: {desc},
-                status: 'todo'
-            }
-        );
+    useEffect(()=>{
+        console.log(activeTasks);
+        updateProject(activeProject, activeTasks);
+    },[activeTasks])
 
-        setActiveProject(tempProject);
-        updateProjects(activeProject);
-        toggleModal();  
-    }
-
-    // Delete a task and update Projects list.
-    const deleteTask =(target)=>{
-        const tempProject = activeProject;
-
-        const tempTasks = tempProject.tasks;
-        const filtered = tempTasks.filter(task =>
-            task.name.name !== target
-        );
-        // update the activeTasks state and the project object.
-        tempProject.tasks = filtered;
-        setActiveTasks(filtered);
-        updateProjects(tempProject);   
-    }
-
-    // Change a tasks status
-    const changeStatus = (targetName, newStatus)=>{
-       
-        const tempProject = activeProject;
-       
-        const tempTasks = tempProject.tasks;
-        
-
-
-        for(let i in tempTasks){
-           
-            
-            if(tempTasks[i].name.name === targetName){
-               
-                tempTasks[i].status = newStatus;
-            }
-            
-        }
-        // update the activeTasks state and the project object.
-        tempProject.tasks = tempTasks;
-        setActiveTasks(tempTasks);
-        updateProjects(tempProject); 
-
-       
-    }
-    //  Edit a task.
 
     return (
-       <div className='tasks'>
+       <div className={`tasks ${isViewOpen? 'max': 'min'}`}>
             <div className='task-topper'>
                 {/* TODO: If there's no active project, don't display the modal */}
                 <button onClick ={toggleModal}>New Task</button>
@@ -101,13 +81,10 @@ const TasksView = ({projects,updateProjects}) => {
                 }
             </div>
 
-           
-
-
             <div className='tasks-view'>
 
 
-                {/* In each row, filter through the projects and render the list items with the correct status */}
+                {/* In each column, filter through the projects and render the list items with the correct status */}
             <div className='panel todo-panel'>
                 <h3>To Do</h3>
                 <ul className='tasks-list'>
@@ -115,14 +92,18 @@ const TasksView = ({projects,updateProjects}) => {
                     // Change this to render only the TaskListItems where the status = 'todo'
                     activeTasks.map((task)=>{
                         const {name, desc} = task
-                        if(task.status === 'todo'){
+                        if(task.stage === 'todo'){
                             return(
-                                <TaskListItem 
-                                key = {name.name} 
-                                name ={name.name} 
-                                desc = {desc.desc} 
-                                deleteTask={deleteTask} 
-                                changeStatus={changeStatus}/>
+                              
+
+                                    <TaskListItem 
+                                    key = {name} 
+                                    name ={name} 
+                                    desc = {desc} 
+                                    deleteTask={deleteTask} 
+                                    changeStatus={changeStage}/>
+                                
+                                
                             )
                         }
                         
@@ -145,10 +126,10 @@ const TasksView = ({projects,updateProjects}) => {
                                 name ={name.name} 
                                 desc = {desc.desc} 
                                 deleteTask={deleteTask} 
-                                changeStatus={changeStatus}/>
+                                changeStatus={changeStage}/>
                             )
                         }
-                        
+                       
                     })
                 }
                 </ul>
@@ -156,6 +137,7 @@ const TasksView = ({projects,updateProjects}) => {
 
             <div className='panel done-panel'>
                 <h3>Done</h3>
+                <ul className='tasks-list'>
                 {
                     // Change this to render only the TaskListItems where the status = 'todo'
                     activeTasks.map((task)=>{
@@ -167,12 +149,13 @@ const TasksView = ({projects,updateProjects}) => {
                                 name ={name.name} 
                                 desc = {desc.desc} 
                                 deleteTask={deleteTask} 
-                                changeStatus={changeStatus}/>
+                                changeStatus={changeStage}/>
                             )
                         }
-                        
+                       
                     })
                 }
+                </ul>
             </div>
 
 

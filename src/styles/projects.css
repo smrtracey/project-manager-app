@@ -1,16 +1,38 @@
 .projects-view{
     width: 20%;
+    background: var(--clr-panel-bg);
     border-right: 1px solid black;
     height: 90vh;
-    padding: 10px;
+    transition: 300ms;
 }
 
 .projects-title{
     display:flex;
     justify-content: space-between;
     align-items: center;
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
+    margin-top:20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--clr-dark-text);
+}
+
+.new-project-btn{
+    padding: 10px;
+    margin-left: 10px;
+    border: 1px solid var(--clr-dark-text);
+    border-radius: 20px;
+    font-size: 1.2rem;
+    background: var(--clr-panel-bg);
+    cursor: pointer;
+}
+
+.projects-toggle-btn{
+    padding: 10px;
+    border: 0;
+    background: var(--clr-panel-bg);
+    cursor: pointer;
+    font-size: 1.2rem;
 }
 
 .plus-icon{
@@ -19,35 +41,70 @@
 
 .projects-list{
     list-style: none;
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
-    margin-top:20px;
 }
 
 .projects-list li{
-    margin-bottom:20px;
     font-size: 1.2rem;
 }
 
-.active{
-    font-weight: bold;
-}
-
 .create-form{
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
     display: flex;
+    justify-content: space-between;
 }
 
 .create-form input{
     padding: 5px;
-    width: 85%;
+    width: 80%;
     font-size: .7rem;
     border-right: 0;
 }
 
 .create-form button{
     padding: 5px;
+    width: 20%;
     background: rgba(0,0,0,0);
     border-left:0;
+}
+
+.project-card{
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid var(--clr-dark-text);
+    box-shadow: 0 0 3px 1px var(--clr-dark-text);
+    cursor: pointer;
+}
+
+.project-card-content{
+    width: 90%;
+    height: 100%;
+    margin:0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;   
+}
+
+.name-p{
+    width: 80%;
+    height: 100%;
+    display:flex;
+    align-items: center;
+}
+.active{
+    font-weight: bold;
+}
+
+.min-view{
+    transform: translateX(-90%);
+}
+
+.min-view .arrow-icon{
+    transform: rotate(180deg);
+}
+
+.min-view .projects-list{
+    visibility: hidden;
 }

@@ -16,7 +16,6 @@ const NewTaskModal = ({addTask}) => {
     const handleSubmit = (e) =>{
         e.preventDefault();
         // Create a new task object with a name and description
-       
         addTask(nameInput, descInput)
     }
 

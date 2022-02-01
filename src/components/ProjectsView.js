@@ -1,12 +1,17 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 
 import CreateForm from './CreateForm'
 
 import '../styles/projects.css'
+import ProjectCard from './ProjectCard'
 
-const ProjectsView = ({projects,addProject,makeActive}) => {
+const ProjectsView = ({projects,addProject,deleteProject,makeActive, isViewOpen, toggleView}) => {
+
+    const [projectsList, setProjectsList] = useState([]);
 
     const [isCreating, setIsCreating] = useState(false)
+
+    
 
     const toggleCreate=()=>{
         setIsCreating(!isCreating)
@@ -17,23 +22,32 @@ const ProjectsView = ({projects,addProject,makeActive}) => {
         setIsCreating(false);
     }
 
+    const removeProject = (name)=>{
+        deleteProject(name);
+    }
+
+
+    useEffect(()=>{
+        setProjectsList(projects);
+    },[projects])
+    
     return (
-        <div className='projects-view'>
+        <div className={`projects-view ${isViewOpen ? 'max-view': 'min-view'}`}>
             <div className='projects-title'>
-                <h2>My projects</h2>
-                <i className="fas fa-plus plus-icon" onClick = {toggleCreate}></i>
+                <button className='new-project-btn' onClick = {toggleCreate}> New Project</button>
+                <button className='projects-toggle-btn' onClick = {toggleView}> <i className="fas fa-arrow-left arrow-icon"></i></button>
+                
             </div>
 
             <ul className='projects-list'>
                 {
-                
-                projects.map((project) =>{
+                projectsList.map((project) =>{
                     return (
-                        <li key = {project.name}
-                        className={project.active? 'active' : ''}
-                        onClick = {()=>makeActive(project.name)}>
-                            {project.name}
-                            
+                        <li key = {project.name}>
+                            <ProjectCard name = {project.name}
+                            active = {project.active}
+                            removeProject ={removeProject}
+                            makeActive = {makeActive}/>    
                         </li>
                     )
                 })
